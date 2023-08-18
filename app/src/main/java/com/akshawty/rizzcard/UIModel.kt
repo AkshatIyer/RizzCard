@@ -24,6 +24,7 @@ class UIModel : ViewModel() {
     var url by mutableStateOf("")
         private set
 
+
     fun addNewCard(
         name: String,
         desc: String = "",
@@ -58,13 +59,17 @@ class UIModel : ViewModel() {
         return cards.size
     }
 
-    fun updateName(name: String) {
-        this.name = name
+    fun updateName(it: String) {
+        this.name = it
     }
 
+    fun updateUrl(it: String) {
+        this.url = it
+    }
 
-
-
+    fun updateDesc(it: String) {
+        this.desc = it
+    }
 
 
 }

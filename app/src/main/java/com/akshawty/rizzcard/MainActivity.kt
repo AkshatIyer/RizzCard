@@ -11,15 +11,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +35,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.akshawty.rizzcard.ui.theme.RizzCardTheme
+
+
+enum class Screens {
+    MainScreen,
+    NewCardScreen
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +64,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RizzAppScreen(modifier: Modifier = Modifier) {
+fun RizzAppScreen(modifier: Modifier = Modifier, model: UIModel = viewModel()) {
 
 
     Scaffold(
@@ -64,7 +74,9 @@ fun RizzAppScreen(modifier: Modifier = Modifier) {
             })
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = {
+                // TODO: navigate to newCard
+            }) {
 
             }
         }
@@ -78,13 +90,15 @@ fun RizzAppScreen(modifier: Modifier = Modifier) {
 
 @Composable
 fun Card(name: String, desc: String = "", modifier: Modifier = Modifier, image: Painter) {
-    Box(contentAlignment = Alignment.Center,
-        modifier = Modifier.size(393.dp, 822.dp)) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.size(393.dp, 822.dp)
+    ) {
         Card(
             modifier = modifier,
             elevation = CardDefaults.elevatedCardElevation(),
 
-        ) {
+            ) {
             // QR Code
             Image(
                 painter = image,
@@ -113,6 +127,10 @@ fun Card(name: String, desc: String = "", modifier: Modifier = Modifier, image: 
 @Composable
 fun CardPreview() {
     RizzCardTheme {
-        Card(name = "Instagram",  modifier = Modifier.size(width = 300.dp, height = 400.dp), image = painterResource(R.drawable.shawty))
+        Card(
+            name = "Instagram",
+            modifier = Modifier.size(width = 300.dp, height = 400.dp),
+            image = painterResource(R.drawable.shawty)
+        )
     }
 }
