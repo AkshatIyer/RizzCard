@@ -3,16 +3,18 @@ package com.akshawty.rizzcard
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
-import com.akshawty.rizzcard.ui.theme.Card
+import com.akshawty.rizzcard.ui.RizzCard
 import com.akshawty.rizzcard.ui.theme.uiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 
 class UIModel : ViewModel() {
-    private var cards: MutableList<Card> = mutableListOf()
+    var cards: MutableList<RizzCard> = mutableListOf()
     private val _uiState = MutableStateFlow(uiState())
     val uiState: StateFlow<uiState> = _uiState.asStateFlow()
 
@@ -23,28 +25,37 @@ class UIModel : ViewModel() {
         private set
     var url by mutableStateOf("")
         private set
-
+    var img by mutableStateOf(ImageBitmap(1, 1))
+        private set
 
     fun addNewCard(
-        name: String,
-        desc: String = "",
-        imageResourceId: Int = 0,
-        url: String
+
     ) { //change to default image
-        cards.add(Card(name, desc, imageResourceId, url))
+        _uiState.updateAndGet {
+            currentState -> currentState.copy()
+        }
+        cards.add(
+            RizzCard(
+                name,
+                desc,
+                img,
+                url
+            )
+        )
+        println()
     }
 
     fun updateCurrentCard(
         name: String,
         desc: String = "",
-        imageResourceId: Int = 0,
+        img: ImageBitmap,
         url: String,
         index: Int
     ) {
         cards.get(index).apply {
             this.name = name
             this.desc = desc
-            this.imageResourceId = imageResourceId
+            this.img = img
             this.url = url
         }
     }
@@ -61,15 +72,38 @@ class UIModel : ViewModel() {
 
     fun updateName(it: String) {
         this.name = it
+        _uiState.update { currentState ->
+            currentState.copy(
+                name = it
+            )
+        }
     }
 
     fun updateUrl(it: String) {
         this.url = it
+        _uiState.update { currentState ->
+            currentState.copy(
+                url = it
+            )
+        }
     }
 
     fun updateDesc(it: String) {
-        this.desc = it
+        this.desc = desc
+        _uiState.update { currentState ->
+            currentState.copy(
+                desc = it
+            )
+        }
     }
 
+    fun updateImg(it: ImageBitmap) {
+        this.img = it
+        _uiState.update { currentState ->
+            currentState.copy(
+                qrCode = it
+            )
+        }
+    }
 
 }
